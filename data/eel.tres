@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "eel"
+display_name = "Spark Eel"
+max_health = 68.0
+damage = 11.0
+movement_speed = 2.4
+behavior_type = "ranged"
+essence_reward = 26
+trait_reward = "electric"
+tint = Color(0.407843137254902,0.862745098039216,0.905882352941176,1)
+silhouette = "eel"

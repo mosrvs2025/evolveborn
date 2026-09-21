@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "shell"
+display_name = "Shellback"
+max_health = 88.0
+damage = 10.0
+movement_speed = 1.2
+behavior_type = "territorial"
+essence_reward = 22
+trait_reward = "armor"
+tint = Color(0.831372549019608,0.725490196078431,0.525490196078431,1)
+silhouette = "beetle"

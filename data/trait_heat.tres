@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "heat"
+display_name = "Heat Gland"
+description = "Primary becomes a searing burst. Applies burn."
+core_cost = 3
+trait_type = "active"
+active_ability = "flame"
+visual_mutation = "heat"
+tint = Color(0.980392156862745,0.580392156862745,0.384313725490196,1)

@@ -1,0 +1,9 @@
+{
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "build/web",
+  "headers": [
+    {"source": "/(.*).wasm", "headers": [{"key": "Content-Type", "value": "application/wasm"}]},
+    {"source": "/(.*)", "headers": [{"key": "X-Content-Type-Options", "value": "nosniff"}]}
+  ]
+}

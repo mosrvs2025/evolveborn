@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "bat"
+display_name = "Rift Bat"
+max_health = 50.0
+damage = 10.0
+movement_speed = 3.8
+behavior_type = "hunt"
+essence_reward = 22
+trait_reward = "echo"
+tint = Color(0.650980392156863,0.635294117647059,0.913725490196078,1)
+silhouette = "bat"

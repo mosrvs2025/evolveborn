@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "shadow"
+display_name = "Shadow Membrane"
+description = "Longer dodge invulnerability and faster movement."
+core_cost = 3
+trait_type = "passive"
+active_ability = ""
+visual_mutation = "shadow"
+tint = Color(0.623529411764706,0.513725490196078,0.796078431372549,1)

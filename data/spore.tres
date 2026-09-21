@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "spore"
+display_name = "Sporeling"
+max_health = 58.0
+damage = 9.0
+movement_speed = 1.5
+behavior_type = "ranged"
+essence_reward = 22
+trait_reward = "venom"
+tint = Color(0.780392156862745,0.56078431372549,0.925490196078431,1)
+silhouette = "mushroom"

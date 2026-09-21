@@ -1,0 +1,12 @@
+.godot
+.git
+work
+build/windows
+*.gd
+*.tscn
+*.tres
+*.gdshader
+*.uid
+*.cfg
+project.godot
+scripts

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "arc"
+display_name = "Arc Bolt"
+cooldown = 0.7
+damage = 21.0
+reach = 11

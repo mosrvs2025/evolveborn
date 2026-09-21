@@ -1,0 +1,49 @@
+name: Build and publish the Hollow
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.7.1 and export templates
+        run: |
+          curl -fsSL -o /tmp/godot.zip https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          sudo mv /tmp/godot/Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+          curl -fsSL -o /tmp/templates.tpz https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.7.1.stable
+          unzip -q /tmp/templates.tpz 'templates/web_nothreads*' -d /tmp
+          cp /tmp/templates/web_nothreads* ~/.local/share/godot/export_templates/4.7.1.stable/
+      - name: Import and verify progression
+        run: |
+          godot --headless --editor --import --quit
+          timeout 60 godot --headless -- --self-test | tee test-results.log
+          grep -q SELF_TEST_PASS test-results.log
+      - name: Export browser game
+        run: |
+          mkdir -p build/web
+          godot --headless --export-release Web
+          touch build/web/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4

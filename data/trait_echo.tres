@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "echo"
+display_name = "Echo Sense"
+description = "Longer target range. Reveal distant organisms."
+core_cost = 2
+trait_type = "passive"
+active_ability = ""
+visual_mutation = "echo"
+tint = Color(0.650980392156863,0.635294117647059,0.913725490196078,1)

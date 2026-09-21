@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "hopper"
+display_name = "Thorn Hopper"
+max_health = 74.0
+damage = 12.0
+movement_speed = 3.4
+behavior_type = "leap"
+essence_reward = 26
+trait_reward = "legs"
+tint = Color(0.63921568627451,0.811764705882353,0.403921568627451,1)
+silhouette = "hopper"

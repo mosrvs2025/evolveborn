@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "shade"
+display_name = "Shadecrawler"
+max_health = 95.0
+damage = 14.0
+movement_speed = 3
+behavior_type = "ambush"
+essence_reward = 32
+trait_reward = "shadow"
+tint = Color(0.623529411764706,0.513725490196078,0.796078431372549,1)
+silhouette = "spider"

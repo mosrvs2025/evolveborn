@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "moss"
+display_name = "Moss Grazer"
+max_health = 34.0
+damage = 5.0
+movement_speed = 1.6
+behavior_type = "graze"
+essence_reward = 14
+trait_reward = "regen"
+tint = Color(0.513725490196078,0.733333333333333,0.447058823529412,1)
+silhouette = "grazer"

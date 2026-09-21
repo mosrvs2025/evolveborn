@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "venom"
+display_name = "Toxin Gland"
+description = "Attacks poison prey for four seconds."
+core_cost = 3
+trait_type = "active"
+active_ability = "venom"
+visual_mutation = "venom"
+tint = Color(0.780392156862745,0.56078431372549,0.925490196078431,1)
