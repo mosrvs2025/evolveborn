@@ -1,0 +1,208 @@
+extends RefCounted
+class_name Layouts
+## The Hollow, as data. Each region is a set of chambers, the passages between
+## them, what grows there, what lives there and what it does to you.
+##
+## Zones:  {pos, r, h, ceil}   pos/r in metres, h = floor height, ceil = roof
+## Links:  [zone_a, zone_b, width]
+## Spawns: {species, count, zone (index or -1 for anywhere), radius}
+
+const REGIONS := {
+"awakening_cavern": {
+	"name": "Awakening Cavern",
+	"cell": 1.5,
+	"noise": 0.55,
+	"roof": true,
+	"music": "explore_cave",
+	"zones": [
+		{"pos": Vector2(0, 0), "r": 13.0, "h": 0.0, "ceil": 9.0},
+		{"pos": Vector2(2, 26), "r": 11.0, "h": 1.4, "ceil": 10.0},
+		{"pos": Vector2(-22, 34), "r": 9.0, "h": 2.6, "ceil": 9.0},
+		{"pos": Vector2(20, 48), "r": 13.0, "h": 0.8, "ceil": 12.0},
+	],
+	"links": [[0, 1, 5.0], [1, 2, 4.2], [1, 3, 5.5]],
+	"spawns": [
+		{"species": "moss_grazer", "count": 3, "zone": 1},
+		{"species": "moss_grazer", "count": 2, "zone": 3},
+		{"species": "ember_mite", "count": 3, "zone": 3},
+		{"species": "ember_mite", "count": 2, "zone": 2},
+	],
+	"pools": [{"id": "cavern_start", "zone": 0, "offset": Vector2(0, -4)}],
+	"secrets": [{"id": "cavern_cache", "zone": 2, "offset": Vector2(-3, 3)}],
+	"gate": {"zone": 3, "offset": Vector2(8, 10), "to": "fungal_grotto"},
+	"props": [
+		{"kind": "crystal", "count": 60, "scale": 1.0},
+		{"kind": "stalagmite", "count": 90, "scale": 1.0},
+		{"kind": "pebble", "count": 120, "scale": 1.0},
+	],
+	"hazards": [],
+	"echo": "boot",
+},
+"fungal_grotto": {
+	"name": "Fungal Grotto",
+	"cell": 1.7,
+	"noise": 1.3,
+	"roof": true,
+	"music": "explore_grotto",
+	"zones": [
+		{"pos": Vector2(0, 0), "r": 12.0, "h": 0.0, "ceil": 11.0},
+		{"pos": Vector2(-6, 24), "r": 13.0, "h": 3.2, "ceil": 13.0},
+		{"pos": Vector2(18, 36), "r": 10.0, "h": 6.5, "ceil": 12.0},
+		{"pos": Vector2(-26, 42), "r": 12.0, "h": 1.0, "ceil": 14.0},
+		{"pos": Vector2(2, 58), "r": 15.0, "h": 4.0, "ceil": 15.0},
+	],
+	"links": [[0, 1, 5.5], [1, 2, 4.5], [1, 3, 5.0], [2, 4, 5.0], [3, 4, 4.5]],
+	"spawns": [
+		{"species": "sporeling", "count": 4, "zone": 1},
+		{"species": "sporeling", "count": 3, "zone": 4},
+		{"species": "thorn_hopper", "count": 3, "zone": 2},
+		{"species": "thorn_hopper", "count": 2, "zone": 4},
+		{"species": "rift_bat", "count": 3, "zone": 3},
+		{"species": "rift_bat", "count": 2, "zone": 4},
+		{"species": "moss_grazer", "count": 3, "zone": 3},
+	],
+	"pools": [{"id": "grotto_entry", "zone": 0, "offset": Vector2(0, -3)},
+		{"id": "grotto_high", "zone": 4, "offset": Vector2(-5, 4)}],
+	"secrets": [{"id": "grotto_hollow", "zone": 3, "offset": Vector2(-6, -5)}],
+	"gate": {"zone": 4, "offset": Vector2(6, 10), "to": "sunken_ruins"},
+	"props": [
+		{"kind": "mushroom", "count": 140, "scale": 1.0},
+		{"kind": "tall_fungus", "count": 55, "scale": 1.0},
+		{"kind": "root", "count": 70, "scale": 1.0},
+		{"kind": "pebble", "count": 90, "scale": 1.0},
+	],
+	"hazards": [
+		{"kind": "spore_vent", "zone": 1, "offset": Vector2(5, 3), "radius": 4.0},
+		{"kind": "spore_vent", "zone": 4, "offset": Vector2(-7, -6), "radius": 4.5},
+		{"kind": "spore_vent", "zone": 2, "offset": Vector2(0, 0), "radius": 3.6},
+	],
+	"echo": "grotto",
+},
+"sunken_ruins": {
+	"name": "Sunken Ruins",
+	"cell": 1.8,
+	"noise": 0.7,
+	"roof": true,
+	"music": "explore_ruins",
+	"zones": [
+		{"pos": Vector2(0, 0), "r": 12.0, "h": 0.0, "ceil": 12.0},
+		{"pos": Vector2(20, 18), "r": 14.0, "h": -1.5, "ceil": 16.0},
+		{"pos": Vector2(-18, 24), "r": 11.0, "h": 1.5, "ceil": 11.0},
+		{"pos": Vector2(6, 44), "r": 16.0, "h": -2.5, "ceil": 18.0},
+		{"pos": Vector2(-24, 52), "r": 10.0, "h": 2.0, "ceil": 10.0},
+	],
+	"links": [[0, 1, 5.5], [0, 2, 4.5], [1, 3, 6.0], [2, 3, 5.0], [3, 4, 4.0]],
+	"spawns": [
+		{"species": "shellback", "count": 3, "zone": 1},
+		{"species": "shellback", "count": 2, "zone": 3},
+		{"species": "spark_eel", "count": 3, "zone": 3},
+		{"species": "spark_eel", "count": 2, "zone": 1},
+		{"species": "bellow_toad", "count": 3, "zone": 2},
+		{"species": "silk_weaver", "count": 3, "zone": 3},
+		{"species": "rift_bat", "count": 3, "zone": 1},
+		{"species": "moss_grazer", "count": 2, "zone": 2},
+	],
+	"pools": [{"id": "ruins_entry", "zone": 0, "offset": Vector2(-3, -3)},
+		{"id": "ruins_deep", "zone": 3, "offset": Vector2(8, 6)}],
+	"secrets": [{"id": "ruins_vault", "zone": 4, "offset": Vector2(0, 2)}],
+	"gate": {"zone": 3, "offset": Vector2(-6, 12), "to": "verdant_basin"},
+	"props": [
+		{"kind": "pillar", "count": 46, "scale": 1.0},
+		{"kind": "block", "count": 80, "scale": 1.0},
+		{"kind": "root", "count": 60, "scale": 1.0},
+		{"kind": "crystal", "count": 40, "scale": 1.0},
+		{"kind": "pebble", "count": 80, "scale": 1.0},
+	],
+	"hazards": [
+		{"kind": "charged_pool", "zone": 3, "offset": Vector2(-4, -4), "radius": 5.0},
+		{"kind": "charged_pool", "zone": 1, "offset": Vector2(6, -5), "radius": 4.0},
+	],
+	"echo": "ruins",
+},
+"verdant_basin": {
+	"name": "Verdant Basin",
+	"cell": 2.1,
+	"noise": 1.6,
+	"roof": false,
+	"music": "explore_basin",
+	"zones": [
+		{"pos": Vector2(0, 0), "r": 16.0, "h": 0.0, "ceil": 26.0},
+		{"pos": Vector2(28, 14), "r": 18.0, "h": 1.5, "ceil": 26.0},
+		{"pos": Vector2(-26, 20), "r": 17.0, "h": -1.0, "ceil": 26.0},
+		{"pos": Vector2(4, 44), "r": 20.0, "h": 2.5, "ceil": 28.0},
+		{"pos": Vector2(34, 52), "r": 14.0, "h": 4.0, "ceil": 26.0},
+		{"pos": Vector2(-22, 58), "r": 15.0, "h": 0.5, "ceil": 26.0},
+	],
+	"links": [[0, 1, 9.0], [0, 2, 8.0], [1, 3, 9.0], [2, 3, 8.0], [3, 4, 7.0],
+		[3, 5, 7.0], [1, 4, 6.0]],
+	"spawns": [
+		{"species": "moss_grazer", "count": 6, "zone": -1},
+		{"species": "thorn_hopper", "count": 4, "zone": -1},
+		{"species": "ember_mite", "count": 4, "zone": -1},
+		{"species": "shadecrawler", "count": 3, "zone": 3},
+		{"species": "shadecrawler", "count": 2, "zone": 5},
+		{"species": "silk_weaver", "count": 3, "zone": 2},
+		{"species": "bellow_toad", "count": 3, "zone": 1},
+		{"species": "spark_eel", "count": 3, "zone": 4},
+		{"species": "rift_bat", "count": 4, "zone": -1},
+		{"species": "shellback", "count": 3, "zone": 1},
+		{"species": "sporeling", "count": 3, "zone": 5},
+		{"species": "grove_sentinel", "count": 1, "zone": 4},
+	],
+	"pools": [{"id": "basin_entry", "zone": 0, "offset": Vector2(0, -5)},
+		{"id": "basin_far", "zone": 3, "offset": Vector2(10, 8)}],
+	"secrets": [{"id": "basin_grove", "zone": 5, "offset": Vector2(-6, 6)},
+		{"id": "basin_ridge", "zone": 4, "offset": Vector2(5, -6)}],
+	"gate": {"zone": 3, "offset": Vector2(-10, 16), "to": "ancient_nest"},
+	"props": [
+		{"kind": "tree", "count": 70, "scale": 1.0},
+		{"kind": "bush", "count": 150, "scale": 1.0},
+		{"kind": "grass", "count": 420, "scale": 1.0},
+		{"kind": "boulder", "count": 60, "scale": 1.0},
+		{"kind": "mushroom", "count": 60, "scale": 1.0},
+	],
+	"hazards": [],
+	"echo": "basin",
+},
+"ancient_nest": {
+	"name": "Ancient Nest",
+	"cell": 1.9,
+	"noise": 0.9,
+	"roof": true,
+	"music": "danger",
+	"zones": [
+		{"pos": Vector2(0, 0), "r": 12.0, "h": 0.0, "ceil": 13.0},
+		{"pos": Vector2(0, 26), "r": 11.0, "h": -1.5, "ceil": 12.0},
+		{"pos": Vector2(0, 54), "r": 24.0, "h": -3.0, "ceil": 24.0},
+	],
+	"links": [[0, 1, 6.0], [1, 2, 8.0]],
+	"spawns": [
+		{"species": "shadecrawler", "count": 3, "zone": 1},
+		{"species": "ember_mite", "count": 4, "zone": 1},
+		{"species": "sporeling", "count": 3, "zone": 0},
+		{"species": "thorn_hopper", "count": 3, "zone": 1},
+	],
+	"pools": [{"id": "nest_gate", "zone": 0, "offset": Vector2(0, -4)},
+		{"id": "nest_threshold", "zone": 1, "offset": Vector2(-6, 6)}],
+	"secrets": [],
+	"gate": {},
+	"boss": {"zone": 2, "offset": Vector2(0, 8)},
+	"props": [
+		{"kind": "root", "count": 150, "scale": 1.3},
+		{"kind": "corrupt_growth", "count": 90, "scale": 1.0},
+		{"kind": "pillar", "count": 24, "scale": 1.0},
+		{"kind": "pebble", "count": 70, "scale": 1.0},
+	],
+	"hazards": [
+		{"kind": "corrupt_pool", "zone": 1, "offset": Vector2(5, 2), "radius": 4.0},
+		{"kind": "corrupt_pool", "zone": 1, "offset": Vector2(-5, -4), "radius": 3.6},
+	],
+	"echo": "nest",
+},
+}
+
+static func get_layout(id: String) -> Dictionary:
+	return REGIONS.get(id, REGIONS["awakening_cavern"])
+
+static func display_name(id: String) -> String:
+	return String(get_layout(id).get("name", id))

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "mite_charge"
+display_name = "Ember Charge"
+shape = "melee_arc"
+damage = 7
+cooldown = 1.6
+range = 2.0
+angle_deg = 100
+lunge = 3.4
+status = "burn"
+status_power = 2.0
+status_time = 2.0
+windup = 0.35
+color = Color(1.0, 0.6, 0.3, 1.0)
+sfx = "slash"
+vfx = "ember"

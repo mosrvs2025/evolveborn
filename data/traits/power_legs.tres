@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "power_legs"
+display_name = "Power Legs"
+core_cost = 2
+trait_type = "hybrid"
+description = "Folded rear limbs. Faster, and Burst becomes a Leap you can steer in the air."
+stat_modifiers = {
+"move_speed": 0.13,
+"air_control": 0.35
+}
+active_ability = "leap"
+ability_slot = "mobility"
+visual_mutation = "haunches"
+synergy_tags = PackedStringArray("mobility", "kinetic")
+color = Color(0.75, 1.0, 0.55, 1.0)
+echo_note = "Stored tension. Cheap, and it changes every room you enter."

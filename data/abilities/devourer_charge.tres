@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "devourer_charge"
+display_name = "Consuming Charge"
+shape = "dash"
+damage = 26
+cooldown = 6.0
+speed = 22.0
+duration = 0.9
+radius = 3.0
+knockback = 16.0
+windup = 1.0
+color = Color(0.7, 0.3, 0.4, 1.0)
+sfx = "charge"
+vfx = "quake"
+flags = {
+"telegraph": 1.0,
+"damage_on_contact": 1.0
+}

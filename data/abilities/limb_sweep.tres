@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "limb_sweep"
+display_name = "Sweeping Limb"
+shape = "melee_arc"
+damage = 18
+cooldown = 4.2
+range = 9.0
+angle_deg = 180
+knockback = 15.0
+windup = 0.8
+color = Color(0.6, 0.45, 0.3, 1.0)
+sfx = "sweep"
+vfx = "impact"
+flags = {
+"telegraph": 1.0
+}

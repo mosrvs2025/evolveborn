@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "spark_eel"
+display_name = "Spark Eel"
+max_health = 34
+damage = 9
+move_speed = 3.6
+behavior = "ranged"
+aggro_range = 17.0
+attack_range = 13.0
+attack_cooldown = 2.6
+attack_windup = 0.5
+ranged_ability = "eel_arc"
+essence_reward = 15
+trait_reward = "electrical_organ"
+body_plan = "eel"
+body_scale = 1.0
+color_primary = Color(0.15, 0.3, 0.4, 1.0)
+color_secondary = Color(0.6, 0.95, 1.0, 1.0)
+glow = Color(0.5, 0.9, 1.0, 1.0)
+flies = true
+hover_height = 1.7
+species_tags = PackedStringArray("shock", "aquatic")
+voice = "eel"
+description = "It swims through air the way it swims through water, and it is always charged."

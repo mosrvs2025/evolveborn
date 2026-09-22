@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "pressurized_sac"
+display_name = "Pressurized Sac"
+core_cost = 2
+trait_type = "hybrid"
+description = "A bladder that vents on impact. The primary strike gains a shockwave and heavy knockback."
+stat_modifiers = {
+"knockback": 0.5
+}
+active_ability = "shock_slam"
+ability_slot = "primary"
+visual_mutation = "bladder"
+synergy_tags = PackedStringArray("kinetic", "heat")
+color = Color(0.7, 0.95, 0.95, 1.0)
+echo_note = "It is holding more than it should. That is the point."

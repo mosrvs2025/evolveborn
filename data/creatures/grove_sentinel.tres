@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "grove_sentinel"
+display_name = "Grove Sentinel"
+max_health = 210
+damage = 20
+armor = 6.0
+move_speed = 2.6
+behavior = "territorial"
+aggro_range = 13.0
+attack_range = 3.4
+attack_cooldown = 2.8
+attack_windup = 0.8
+ranged_ability = "root_slam"
+essence_reward = 60
+trait_reward = ""
+body_plan = "sentinel"
+body_scale = 1.9
+color_primary = Color(0.28, 0.34, 0.26, 1.0)
+color_secondary = Color(0.9, 0.85, 0.5, 1.0)
+glow = Color(0.8, 0.95, 0.4, 0.55)
+species_tags = PackedStringArray("elite", "armored", "flora")
+voice = "sentinel"
+flags = {
+"elite": 1.0
+}
+description = "Older than the basin's current inhabitants, and it has outlived all of them."

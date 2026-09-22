@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "silk_shot"
+display_name = "Snare"
+shape = "web"
+damage = 3
+cooldown = 4.5
+range = 15.0
+speed = 16.0
+radius = 2.4
+duration = 3.0
+status = "root"
+status_power = 1.0
+status_time = 1.8
+windup = 0.5
+color = Color(0.9, 0.95, 0.85, 1.0)
+sfx = "web"
+vfx = "web"

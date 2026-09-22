@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "conductive_web"
+display_name = "Conductive Web"
+description = "The silk holds them still and the charge finds them all."
+shape = "web"
+damage = 6
+cooldown = 2.8
+range = 17.0
+speed = 20.0
+radius = 3.6
+duration = 5.0
+status = "shock"
+status_power = 9.0
+status_time = 5.0
+windup = 0.12
+color = Color(0.7, 0.95, 1.0, 1.0)
+sfx = "web"
+vfx = "web_shock"
+flags = {
+"electrified": 1.0,
+"tick": 0.5
+}
