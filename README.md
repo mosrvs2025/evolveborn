@@ -2,7 +2,7 @@
 
 An original, standalone Godot 4.7.1 / GDScript browser action RPG. Start as a Wisp, hunt eight species, Devour their adaptations, configure a capacity-limited body, evolve, and confront the Root Devourer.
 
-**Working tree: growth update (v0.2).** This revision adds a volumetric growth loop inspired by the pleasure of outgrowing a familiar world. The public links below currently serve v0.1 until the new build is published. See `GROWTH_UPDATE.md`.
+**Growth update (v0.2).** This revision adds a volumetric growth loop inspired by the pleasure of outgrowing a familiar world. Published on Vercel; GitHub Pages builds from main. See `GROWTH_UPDATE.md`.
 
 ## Play
 
@@ -68,3 +68,4 @@ No external art, audio, font, API, account or gameplay service is required. Geom
 Automated checks cover real movement/attack/held-Devour input, trait capacity, synergy, evolution, death recovery, boss victory, ending state, and disk save/load. Desktop and emulated mobile browsers are visually checked for launch, layout, menus, and console errors.
 
 This is the first playable implementation of the brief. The 20–40 minute first-play target and subjective balance need human playtesting; they are not validated timing guarantees. Real iOS/Android hardware and physical gamepads have not been tested. Art and music are procedural and modest in scope. Quick-swap loadout slots are not included. The five chambers follow a linear main route with optional relic alcoves; they are not a large open world.
+

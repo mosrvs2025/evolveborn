@@ -1,6 +1,6 @@
-# The world is food — v0.2 working build
+# The world is food — v0.2
 
-Implemented locally in response to the growth direction. Public v0.1 remains available; this revision has not yet been pushed or deployed.
+The growth update is published at https://evolveborn.vercel.app.
 
 ## The new loop
 
@@ -24,4 +24,4 @@ Browser visual checks cover starter absorption, the new size HUD, an 11 m growth
 
 ## Publishing status
 
-An automatic approval review failed because of an account usage limit during the previous turn's final Pages verification. The failure was not a finding that the action was unsafe. Local development continued; publishing this revision requires restored approval-review availability. No alternate route was used to bypass that review failure.
+Published to Vercel production on September 21, 2026. The public index.pck SHA-256 matches the locally tested growth export. GitHub Pages deploys separately through the repository workflow.
