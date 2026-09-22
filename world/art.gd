@@ -11,7 +11,7 @@ static func material(color: Color, glow: float = 0.0) -> StandardMaterial3D:
 	if glow > 0:
 		mat.emission_enabled = true
 		mat.emission = color
-		mat.emission_energy_multiplier = glow
+		mat.emission_energy_multiplier = glow*0.28
 	materials[key] = mat
 	return mat
 

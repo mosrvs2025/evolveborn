@@ -26,7 +26,13 @@ func _ready():
 	add_child(collider)
 	visual = Node3D.new()
 	add_child(visual)
-	Art.shape(visual,"sphere",Vector3(0,0.65,0),Vector3(1.25,0.78,1.3),Color("63c8b6"))
+	var body=Art.shape(visual,"sphere",Vector3(0,0.65,0),Vector3(1.25,0.78,1.3),Color("63c8b6"))
+	body.mesh.radial_segments=32
+	body.mesh.rings=16
+	var jelly=ShaderMaterial.new()
+	jelly.shader=preload("res://world/slime.gdshader")
+	jelly.set_shader_parameter("motion",game.settings.motion)
+	body.material_override=jelly
 	Art.shape(visual,"sphere",Vector3(0,0.76,-0.38),Vector3(0.44,0.42,0.38),Color("baffce"),1.3)
 	for x in [-0.26,0.26]:
 		Art.shape(visual,"sphere",Vector3(x,0.87,-0.57),Vector3(0.13,0.14,0.1),Color("102c33"))

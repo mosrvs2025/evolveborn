@@ -151,7 +151,9 @@ func layout():
 	root.get_node("Vitals").size.x = 185 if s.x<500 else (260 if compact else 300)
 	location_label.position = Vector2(24,182) if compact else Vector2(s.x*0.5-200,28)
 	objective.position = location_label.position+Vector2(0,25)
-	objective.add_theme_font_size_override("font_size",17 if compact else 22)
+	objective.add_theme_font_size_override("font_size",16 if compact else 20)
+	objective.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	objective.size.x=minf(480,s.x-objective.position.x-24)
 	root.get_node("PauseButton").position = Vector2(s.x-70,20)
 	root.get_node("PauseButton").size.x = 50
 	root.get_node("BodyButton").position = Vector2(s.x-177,20)
@@ -213,6 +215,9 @@ func update_hud():
 	objective.text = "Next chamber  /  grow to %.1f m" % (game.growth.GATES[game.region+1]*1.25) if game.region<4 else "Consume the Ancient Nest"
 	if game.region<4 and size>=game.growth.GATES[game.region+1]: objective.text="Chamber open  /  follow the trail"
 	if game.essence>=180 and game.form=="Wisp": objective.text="Evolution ready  /  find a Memory Pool"
+	var quest=game.story.objective()
+	if quest!="": objective.text=quest
+	if game.growth.combo>=3: size_label.text += "  ·  FEAST x%d" % game.growth.combo
 	var primary = InputSetup.prompt("action_primary",game.device)
 	var secondary = InputSetup.prompt("action_secondary",game.device)
 	var mobility = InputSetup.prompt("mobility",game.device)
@@ -291,7 +296,7 @@ func close_menu():
 
 func main_menu():
 	game.playing = false
-	menu("The world is food.\nGrow into it.","Begin as a droplet. Absorb seeds, swallow creatures, uproot forests, and devour ancient ruins. Every meal changes your body—and your view of the world.")
+	menu("A hungry heart.\nA world to heal.","Follow Luma, the last gardener. Grow from a droplet into a giant, solve five memory shrines, and uncover the secret of the Root Devourer.")
 	label(content,"ABSORB   /   GROW   /   MUTATE   /   DEVOUR",16,MINT)
 	if not game.saved.is_empty(): button(content,"Continue your evolution",func(): game.start_run(true))
 	button(content,"Awaken in the Hollow",func():
@@ -299,7 +304,7 @@ func main_menu():
 		else: game.start_run(false))
 	button(content,"Settings & accessibility",settings_menu)
 	button(content,"Controls",controls_menu)
-	label(content,"One region. Eight species. Your body is your build.\nLocal saves · No account · Plays offline after loading",16,Color("8da59d"))
+	label(content,"Five chambers. Five memories. One hungry little hero.\nLocal saves · No account · Plays offline after loading",16,Color("8da59d"))
 	focus_first()
 
 func confirm_new():
@@ -312,6 +317,7 @@ func pause_menu():
 	menu("Memory suspended","The Hollow waits.")
 	button(content,"Resume",close_menu)
 	button(content,"Body configuration",body_menu)
+	button(content,"Luma's journal",journal_menu)
 	button(content,"Settings & accessibility",settings_menu)
 	button(content,"Controls",controls_menu)
 	button(content,"Return to Memory Pool",func(): game.respawn(); close_menu())
@@ -423,7 +429,7 @@ func controls_menu():
 	focus_first()
 
 func end_menu():
-	menu("Beyond the Hollow","END OF VERTICAL SLICE\nThe Primordial Core stirs. This body cannot yet contain what comes next.")
+	menu("Beyond the Hollow",game.story.ending())
 	label(content,"%02d:%02d  /  %s" % [int(game.stats.time)/60,int(game.stats.time)%60,game.form.to_upper()],30,MINT)
 	label(content,"FINAL SIZE  %.1f m  /  %d SCENERY OBJECTS\nBIGGEST MEAL  %s" % [game.growth.size_value()*1.25,game.growth.objects_eaten,game.growth.biggest],21,Color("e4d49e"))
 	label(content,"%d defeated   ·   %d Devoured   ·   %d / 8 species\n%d traits   ·   %d / 5 synergies   ·   %d deaths\n%d / 5 hidden memories discovered" % [game.stats.kills,game.stats.devoured,game.discovered.size(),game.discovered.size(),game.synergies.size(),game.stats.deaths,game.secrets.size()],20)
@@ -477,3 +483,13 @@ func _input(event):
 		if event.index==stick_id: game.touch_vector=((event.position-stick_origin)/60).limit_length()
 		elif event.index==camera_id: game.orbit(event.relative)
 
+
+func journal_menu():
+	menu("Luma's journal","Restore golden shrines in each chamber. Every recovered memory carries a seed into the ending.")
+	label(content,"%d / 5 MEMORIES RESTORED" % game.story.solved.size(),22,MINT)
+	for i in range(5):
+		label(content,"%02d / %s" % [i+1,game.story.TITLES[i]],22,MINT)
+		var entry=label(content,game.story.MEMORIES[i] if i in game.story.solved else game.story.HINTS[i]+" — "+game.world.NAMES[i],18)
+		entry.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	button(content,"Back",pause_menu)
+	focus_first()

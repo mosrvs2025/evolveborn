@@ -118,8 +118,8 @@ func absorb(item):
 	consumed.append(item.uid)
 	objects_eaten+=1
 	combo+=1
-	combo_clock=2.4
-	add_mass(item.data.biomass,item.data.display_name,item.data.required_size)
+	combo_clock=4.0
+	add_mass(item.data.biomass*(1.0+minf(combo,10)*0.04),item.data.display_name,item.data.required_size)
 	game.essence += 1 if item.data.required_size<2 else 3
 	game.health=minf(game.max_health(),game.health+0.6)
 	game.sound.play("devour",minf(1.85,0.85+combo*0.05))

@@ -2,7 +2,7 @@
 
 An original, standalone Godot 4.7.1 / GDScript browser action RPG. Start as a Wisp, hunt eight species, Devour their adaptations, configure a capacity-limited body, evolve, and confront the Root Devourer.
 
-**Growth update (v0.2).** This revision adds a volumetric growth loop inspired by the pleasure of outgrowing a familiar world. Published on Vercel; GitHub Pages builds from main. See `GROWTH_UPDATE.md`.
+**Luma's Garden update (v0.3).** Five memory-shrine puzzles, a companion and story journal, two narrative endings, feeding-streak bonuses, glossy animated slime, and drifting cave lights. See `STORY_UPDATE.md`.
 
 ## Play
 

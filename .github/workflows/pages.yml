@@ -29,6 +29,8 @@ jobs:
           godot --headless --editor --import --quit
           timeout 60 godot --headless -- --self-test | tee test-results.log
           grep -q SELF_TEST_PASS test-results.log
+          grep -q GROWTH_TEST_PASS test-results.log
+          grep -q STORY_TEST_PASS test-results.log
       - name: Export browser game
         run: |
           mkdir -p build/web

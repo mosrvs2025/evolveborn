@@ -74,6 +74,7 @@ func make_region(id: int):
 		Art.shape(root,"box",Vector3(0,8.5,z+14),Vector3(16,0.9,1.8),Color("6e8075"))
 		Art.label(root,"LIVING MEMBRANE  /  GROW TO %.1f m" % (game.growth.GATES[id]*1.25),Vector3(0,3.5,z+15),Color("d2e6bf"),24)
 	populate_food(root,id,rng)
+	add_motes(root,id,rng)
 	# A winding luminous trail makes the next region legible.
 	for j in range(15):
 		var p = Vector3(sin(j*0.45+id)*3,0.018,z+17-j*3.2)
@@ -144,5 +145,28 @@ func populate_food(root: Node3D,id: int,rng: RandomNumberGenerator):
 			z=7-i*1.4
 			item.data=game.growth.data["dew" if i<3 else "seed"]
 		if Vector3(x,0,z).distance_to(pools[id])<3.6: x+=5
+		# Keep the memory puzzle route free of oversized edible colliders.
+		if x>2 and z>-id*48-18 and z<-id*48-3: x=-absf(x)-1
 		item.position=Vector3(x,0,z)
 		root.add_child(item)
+
+func add_motes(root: Node3D,id: int,rng: RandomNumberGenerator):
+	var swarm=MultiMeshInstance3D.new()
+	var multi=MultiMesh.new()
+	multi.transform_format=MultiMesh.TRANSFORM_3D
+	multi.use_custom_data=true
+	var mesh=SphereMesh.new()
+	mesh.radial_segments=6
+	mesh.rings=3
+	multi.mesh=mesh
+	multi.instance_count=48
+	for i in range(48):
+		var basis=Basis.IDENTITY.scaled(Vector3.ONE*rng.randf_range(0.045,0.09))
+		multi.set_instance_transform(i,Transform3D(basis,Vector3(rng.randf_range(-21,21),rng.randf_range(0.5,6),-id*48+rng.randf_range(-24,18))))
+		multi.set_instance_custom_data(i,Color(rng.randf(),0,0))
+	swarm.multimesh=multi
+	var mat=ShaderMaterial.new()
+	mat.shader=preload("res://world/motes.gdshader")
+	mat.set_shader_parameter("motion",game.settings.motion)
+	swarm.material_override=mat
+	root.add_child(swarm)

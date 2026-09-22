@@ -59,6 +59,7 @@ var spawned_regions: Dictionary = {}
 var test_mode: bool = false
 var last_dash: float = 0
 var growth
+var story
 
 func _ready():
 	InputSetup.setup()
@@ -99,6 +100,9 @@ func _ready():
 	hud = preload("res://ui/interface.gd").new()
 	hud.game = self
 	add_child(hud)
+	story=preload("res://systems/story.gd").new()
+	story.game=self
+	add_child(story)
 	spawn_region(0)
 	hud.main_menu()
 	apply_quality()
@@ -150,6 +154,7 @@ func start_run(resume: bool = false):
 		completed = false
 		boss_killed = false
 		growth.reset()
+	story.reset(saved.get("story",{}) if resume else {})
 	for item in growth.items:
 		if is_instance_valid(item): item.queue_free()
 	growth.items.clear()
@@ -173,7 +178,7 @@ func start_run(resume: bool = false):
 	menu_open = false
 	ending_time = -1
 	hud.close_menu()
-	echo("A WORLD OF POSSIBLE FOOD","Glide over dew and seeds to absorb them. Grow large enough to swallow fungi, creatures, trees, and ruins.")
+	echo("LUMA / THE LAST GARDENER","Little one, the Hollow is fading. Eat to grow, follow my golden lanterns, and recover the five memories I left behind. Start with the dew beside you.")
 	camera_yaw = 0
 	save_game()
 
@@ -521,7 +526,7 @@ func finish():
 	ending_time = 0
 	player.position = Vector3(0,0,-232)
 	health = max_health()
-	echo("PRIMORDIAL CORE ACQUIRED","Core capacity insufficient. Evolution path unknown.")
+	echo("THE ROOTS OPEN",story.ending())
 	sound.play("evolve",0.65)
 	# A distant world, visible only beyond the final root.
 	var horizon = Node3D.new()
@@ -549,6 +554,7 @@ func save_game():
 	if playing:
 		saved = {"version":1,"settings":settings,"bindings":bindings,"essence":essence,"form":form,"equipped":equipped,"discovered":discovered,"synergies":synergies,"secrets":secrets,"consumed_ids":consumed_ids,"checkpoint":checkpoint,"stats":stats,"completed":completed,"boss_killed":boss_killed}
 		saved["growth"]=growth.snapshot()
+		saved["story"]=story.snapshot()
 	else:
 		saved["version"] = 1
 		saved["settings"] = settings
@@ -568,6 +574,12 @@ func apply_quality():
 	for child in world.get_children():
 		if child is DirectionalLight3D: child.shadow_enabled = not low
 	sound.volume = settings.volume
+	if is_instance_valid(player):
+		var material=player.visual.get_child(0).material_override
+		material.set_shader_parameter("motion",settings.motion)
+	for chamber in world.loaded.values():
+		for node in chamber.get_children():
+			if node is MultiMeshInstance3D: node.material_override.set_shader_parameter("motion",settings.motion)
 
 func projectile(from: Vector3,to: Vector3,damage: float,color: Color,friendly: bool):
 	if projectiles.size()>=48: return
@@ -716,6 +728,52 @@ func self_test():
 	assert(growth.size_value()>9)
 	assert(growth.objects_eaten>100)
 	print("GROWTH_TEST_PASS: volume, edible thresholds, appetite mutations, persistence, evolved attacks, all five size gates")
+	story_test()
 	print("SELF_TEST_PASS: input, traits, capacity, synergy, evolution, devour, respawn, boss, ending, serialization")
 	await get_tree().create_timer(0.65).timeout
 	get_tree().quit()
+
+func story_test():
+	start_run(false)
+	story.build(0)
+	story.touch_pad(1)
+	assert(story.progress==0)
+	for i in [0,1,2]:
+		player.position=story.pads[i]
+		story._process(0.1)
+	assert(0 in story.solved)
+	var reward=essence
+	story.complete()
+	assert(essence==reward)
+	story.build(1)
+	for i in [0,2,1]: story.touch_pad(i)
+	assert(1 in story.solved)
+	region=2
+	story.build(2)
+	player.position=story.center(2)
+	player.velocity=Vector3.ZERO
+	growth.mass=27
+	story._process(3.1)
+	assert(not 2 in story.solved)
+	growth.mass=64
+	story._process(3.1)
+	assert(2 in story.solved)
+	region=3
+	story.build(3)
+	story.touch_pad(0)
+	player.position=Vector3.ZERO
+	story._process(15)
+	assert(story.progress==0 and not 3 in story.solved)
+	for i in [0,1,2]: story.touch_pad(i)
+	assert(3 in story.solved)
+	story.build(4)
+	for i in [2,0,1]: story.touch_pad(i)
+	assert(story.solved.size()==5)
+	assert(SaveStore.write_save({"version":1,"story":story.snapshot()},"res://build/test-story.json"))
+	var memories=SaveStore.read_save("res://build/test-story.json").story
+	DirAccess.remove_absolute("res://build/test-story.json")
+	story.reset(memories)
+	assert(story.solved.size()==5 and "GARDEN REMEMBERS" in story.ending())
+	story.reset()
+	assert(story.solved.is_empty())
+	print("STORY_TEST_PASS: wrong order, five shrines, weight gate, timer expiry, unique rewards, persistence, both endings")
