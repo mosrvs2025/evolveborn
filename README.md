@@ -2,6 +2,8 @@
 
 An original, standalone Godot 4.7.1 / GDScript browser action RPG. Start as a Wisp, hunt eight species, Devour their adaptations, configure a capacity-limited body, evolve, and confront the Root Devourer.
 
+**Working tree: growth update (v0.2).** This revision adds a volumetric growth loop inspired by the pleasure of outgrowing a familiar world. The public links below currently serve v0.1 until the new build is published. See `GROWTH_UPDATE.md`.
+
 ## Play
 
 - **Vercel:** https://evolveborn.vercel.app
@@ -28,7 +30,9 @@ Touch has a floating left joystick, right-side camera drag, large action buttons
 
 ## Progression
 
-Explore five connected chambers. Consume three local organisms to cross each living membrane; the Ancient Nest additionally requires evolution. Memory Pools heal, checkpoint, and enable evolution at 180 Essence. Eight traits cost between two and four Core points. The Wisp has nine points, Predator and Bulwark thirteen, and Arcane sixteen. Five pairings unlock synergies. Death preserves discoveries, the equipped body, essence, and evolution. The boss has three phases and copies an equipped adaptation in its last phase. Devouring its fragment triggers the ending, statistics, replay, and continued exploration.
+Explore five connected chambers. Start 75 cm wide and automatically absorb smaller scenery on contact. Accumulated biomass grows the slime, its collision body, movement, attack range, and camera framing. Food progresses from dew and seeds through fungi, crystals, boulders, trees, pillars, and elder roots. Grow to each chamber's size threshold to pass its membrane; the Ancient Nest additionally requires evolution. Small-enough creatures can be swallowed alive; larger prey must be fought and Devoured. Secondary attacks also inhale nearby eligible scenery.
+
+Memory Pools heal, checkpoint, and enable evolution at 180 Essence. Eight traits cost between two and four Core points. The Wisp has nine points, Predator and Bulwark thirteen, and Arcane sixteen. Five pairings unlock synergies. Traits also alter appetite: plant digestion, mineral digestion, magnetic attraction, absorption radius, and biomass efficiency. Death preserves size, consumed scenery, discoveries, the equipped body, essence, and evolution. The boss has three phases and copies an equipped adaptation in its last phase. Devouring its fragment triggers the ending, statistics, replay, and continued exploration.
 
 ## Development
 
@@ -53,6 +57,7 @@ Windows: create `build/windows`, then `godot --headless --export-release Windows
 - `creatures/`: readable AI states, ecosystem hunting, telegraphs, statuses and boss phases.
 - `world/`: deterministic authored region dressing, adjacent-region streaming and terrain shader.
 - `systems/`: action mapping, versioned local saves, original procedural audio.
+- `systems/growth.gd`, `world/edible.gd`: volumetric size, food thresholds, suction, scenery persistence, and absorption animation.
 - `ui/`: HUD, body, evolution, settings, remapping and touch controls.
 - `game.gd`: run progression, combat resolution and integration checks.
 

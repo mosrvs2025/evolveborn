@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "ancient_root"
+display_name = "Elder root"
+required_size = 7.5
+biomass = 360
+body_size = 6
+tint = Color(0.670588235294118,0.501960784313725,0.56078431372549,1)
+family = "plant"

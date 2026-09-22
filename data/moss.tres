@@ -12,3 +12,4 @@ essence_reward = 14
 trait_reward = "regen"
 tint = Color(0.513725490196078,0.733333333333333,0.447058823529412,1)
 silhouette = "grazer"
+body_size = 1.2

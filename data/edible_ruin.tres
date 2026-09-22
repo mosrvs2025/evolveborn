@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "ruin"
+display_name = "Ancient pillar"
+required_size = 5.8
+biomass = 170
+body_size = 4
+tint = Color(0.698039215686274,0.67843137254902,0.556862745098039,1)
+family = "mineral"

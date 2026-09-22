@@ -15,7 +15,7 @@ func _ready():
 	atmosphere.background_color = Color("10272f")
 	atmosphere.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	atmosphere.ambient_light_color = Color("91cec6")
-	atmosphere.ambient_light_energy = 0.65
+	atmosphere.ambient_light_energy = 0.5
 	atmosphere.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	atmosphere.fog_enabled = true
 	atmosphere.fog_light_color = Color("1b3940")
@@ -25,7 +25,7 @@ func _ready():
 	var sun = DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-55,-30,0)
 	sun.light_color = Color("c3f0cb")
-	sun.light_energy = 1.4
+	sun.light_energy = 0.95
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 48
 	add_child(sun)
@@ -37,14 +37,20 @@ func _ready():
 	floor_body.position = Vector3(0,-0.5,-108)
 	floor_body.add_child(collision)
 	add_child(floor_body)
+	var outskirts=Art.shape(self,"box",Vector3(0,-2.0,-105),Vector3(350,0.5,500),Color("1c393d"))
+	outskirts.visibility_range_end=0
+	for i in range(18):
+		var mountain=Art.shape(self,"cone",Vector3((-1 if i%2==0 else 1)*(65+i%3*18),8,-220+i*16),Vector3(25,14+i%4*4,35),Color("304f51"))
+		mountain.visibility_range_end=0
 	stream(0)
 
 func stream(region: int):
+	var radius=2 if game.growth.size_value()>=4.7 else 1
 	for id in loaded.keys():
-		if absi(id-region)>1:
+		if absi(id-region)>radius:
 			loaded[id].queue_free()
 			loaded.erase(id)
-	for id in range(maxi(0,region-1),mini(5,region+2)):
+	for id in range(maxi(0,region-radius),mini(5,region+radius+1)):
 		if not loaded.has(id): make_region(id)
 
 func make_region(id: int):
@@ -55,6 +61,7 @@ func make_region(id: int):
 	rng.seed = 718+id*73
 	var z = -id*48.0
 	var ground = Art.shape(root,"box",Vector3(0,-0.6,z-5),Vector3(49,1.15,50),COLORS[id].darkened(0.4))
+	ground.visibility_range_end=0
 	var ground_mat = ShaderMaterial.new()
 	ground_mat.shader = preload("res://world/ground.gdshader")
 	ground_mat.set_shader_parameter("base_color",COLORS[id].darkened(0.38))
@@ -65,17 +72,8 @@ func make_region(id: int):
 			Art.shape(root,"cylinder",Vector3(x,4,z+14),Vector3(1.2,4,1.2),Color("506866"))
 			Art.shape(root,"box",Vector3(x,8,z+14),Vector3(2.2,0.6,2.2),Color("849286"))
 		Art.shape(root,"box",Vector3(0,8.5,z+14),Vector3(16,0.9,1.8),Color("6e8075"))
-		Art.label(root,"LIVING MEMBRANE  /  ABSORB 3 ORGANISMS TO PASS",Vector3(0,3.5,z+15),Color("d2e6bf"),24)
-	for i in range(10):
-		var rock_pos = Vector3(rng.randf_range(-19,19),0,z+rng.randf_range(-25,18))
-		if absf(rock_pos.x)<4: continue
-		var stone = Art.shape(root,"sphere",rock_pos,Vector3(rng.randf_range(1,3),rng.randf_range(0.3,0.9),rng.randf_range(1,2)),COLORS[id].lightened(0.08))
-		stone.rotation.y = rng.randf()*TAU
-	for i in range(6):
-		var crystal_pos = Vector3((-1 if i%2==0 else 1)*rng.randf_range(13,20),0,z+rng.randf_range(-20,15))
-		for j in range(3):
-			var crystal = Art.shape(root,"cone",crystal_pos+Vector3(j*0.3,0.7+j*0.2,0),Vector3(0.5,0.9+j*0.3,0.5),Color("82c5bd"),0.3)
-			crystal.rotation.z = (j-1)*0.25
+		Art.label(root,"LIVING MEMBRANE  /  GROW TO %.1f m" % (game.growth.GATES[id]*1.25),Vector3(0,3.5,z+15),Color("d2e6bf"),24)
+	populate_food(root,id,rng)
 	# A winding luminous trail makes the next region legible.
 	for j in range(15):
 		var p = Vector3(sin(j*0.45+id)*3,0.018,z+17-j*3.2)
@@ -84,7 +82,7 @@ func make_region(id: int):
 	for i in range(52):
 		var x = rng.randf_range(-24,24)
 		var p = Vector3(x,0,z+rng.randf_range(-27,20))
-		if absf(x)<5: continue
+		if absf(x)<20: continue
 		var scale_size = rng.randf_range(0.7,2.3)
 		if absf(x)>20:
 			var rock = Art.shape(root,"sphere",p+Vector3(0,2,0),Vector3(scale_size*3,scale_size*4,scale_size*3),COLORS[id].darkened(0.25))
@@ -122,3 +120,29 @@ func make_region(id: int):
 	var secret = Vector3(18,0.7,z-16)
 	Art.shape(root,"torus",secret,Vector3(0.8,0.8,0.8),Color("f1cf86"),1.2)
 	Art.label(root,"ECHO RELIC",secret+Vector3.UP*1.6,Color("f1cf86"),22)
+
+func populate_food(root: Node3D,id: int,rng: RandomNumberGenerator):
+	var menus=[
+		["dew","dew","seed","seed","fungus","crystal"],
+		["seed","fungus","fungus","crystal","crystal","boulder"],
+		["fungus","crystal","boulder","boulder","tree","ruin"],
+		["crystal","boulder","tree","tree","ruin","ancient_root"],
+		["boulder","tree","ruin","ruin","ancient_root","ancient_root"]
+	]
+	for i in range(48):
+		var uid=10000+id*100+i
+		if uid in game.growth.consumed: continue
+		var type=menus[id][i%6]
+		var item=preload("res://world/edible.gd").new()
+		item.game=game
+		item.uid=uid
+		item.data=game.growth.data[type]
+		var x=rng.randf_range(-18,18)
+		var z=-id*48+rng.randf_range(-26,12)
+		if i<10 and id==0:
+			x=-6+sin(i*0.9)*1.4
+			z=7-i*1.4
+			item.data=game.growth.data["dew" if i<3 else "seed"]
+		if Vector3(x,0,z).distance_to(pools[id])<3.6: x+=5
+		item.position=Vector3(x,0,z)
+		root.add_child(item)

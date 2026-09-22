@@ -12,3 +12,4 @@ essence_reward = 22
 trait_reward = "armor"
 tint = Color(0.831372549019608,0.725490196078431,0.525490196078431,1)
 silhouette = "beetle"
+body_size = 2

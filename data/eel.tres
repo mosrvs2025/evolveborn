@@ -12,3 +12,4 @@ essence_reward = 26
 trait_reward = "electric"
 tint = Color(0.407843137254902,0.862745098039216,0.905882352941176,1)
 silhouette = "eel"
+body_size = 1.7

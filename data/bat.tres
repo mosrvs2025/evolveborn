@@ -12,3 +12,4 @@ essence_reward = 22
 trait_reward = "echo"
 tint = Color(0.650980392156863,0.635294117647059,0.913725490196078,1)
 silhouette = "bat"
+body_size = 1.3

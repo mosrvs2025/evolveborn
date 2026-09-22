@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "tree"
+display_name = "Canopy tree"
+required_size = 4
+biomass = 65
+body_size = 3
+tint = Color(0.450980392156863,0.607843137254902,0.423529411764706,1)
+family = "plant"

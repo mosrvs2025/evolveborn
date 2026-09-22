@@ -12,3 +12,4 @@ essence_reward = 22
 trait_reward = "venom"
 tint = Color(0.780392156862745,0.56078431372549,0.925490196078431,1)
 silhouette = "mushroom"
+body_size = 1.5

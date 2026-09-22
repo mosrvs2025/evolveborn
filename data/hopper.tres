@@ -12,3 +12,4 @@ essence_reward = 26
 trait_reward = "legs"
 tint = Color(0.63921568627451,0.811764705882353,0.403921568627451,1)
 silhouette = "hopper"
+body_size = 2.2

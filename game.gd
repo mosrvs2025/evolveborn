@@ -58,6 +58,7 @@ var saved: Dictionary = {}
 var spawned_regions: Dictionary = {}
 var test_mode: bool = false
 var last_dash: float = 0
+var growth
 
 func _ready():
 	InputSetup.setup()
@@ -79,6 +80,9 @@ func _ready():
 	sound = preload("res://systems/sound.gd").new()
 	add_child(sound)
 	sound.volume = settings.volume
+	growth=preload("res://systems/growth.gd").new()
+	growth.game=self
+	add_child(growth)
 	world = preload("res://world/hollow.gd").new()
 	world.game = self
 	add_child(world)
@@ -114,6 +118,11 @@ func ability():
 		if id in equipped: return abilities[traits[id].active_ability]
 	return abilities.slam
 
+func ability_name() -> String:
+	var id=ability().id
+	var rank=2 if growth.size_value()>=4.7 else (1 if growth.size_value()>=1.8 else 0)
+	return {"slam":["Body Slam","Rolling Crush","Seismic Bellyflop"],"flame":["Flame Burst","Furnace Breath","Inferno Bloom"],"arc":["Arc Bolt","Magnetic Pulse","Storm Stomach"],"venom":["Venom Spray","Digestive Mist","Caustic Flood"]}[id][rank]
+
 func start_run(resume: bool = false):
 	if resume and not saved.is_empty():
 		essence = int(saved.get("essence",0))
@@ -127,6 +136,7 @@ func start_run(resume: bool = false):
 		stats.merge(saved.get("stats",{}),true)
 		completed = saved.get("completed",false)
 		boss_killed = saved.get("boss_killed",false)
+		growth.reset(saved.get("growth",{"mass":pow(maxf(1.0,growth.GATES[checkpoint]),3)}))
 	else:
 		essence = 0
 		form = "Wisp"
@@ -139,6 +149,12 @@ func start_run(resume: bool = false):
 		stats = {"time":0.0,"kills":0,"devoured":0,"deaths":0,"best":saved.get("stats",{}).get("best",0.0)}
 		completed = false
 		boss_killed = false
+		growth.reset()
+	for item in growth.items:
+		if is_instance_valid(item): item.queue_free()
+	growth.items.clear()
+	for id in world.loaded.keys(): world.loaded[id].queue_free()
+	world.loaded.clear()
 	for creature in creatures:
 		if is_instance_valid(creature): creature.queue_free()
 	creatures.clear()
@@ -152,11 +168,12 @@ func start_run(resume: bool = false):
 	player.velocity = Vector3.ZERO
 	player.rebuild()
 	health = max_health()
+	checkpoint_cooldown=12
 	playing = true
 	menu_open = false
 	ending_time = -1
 	hud.close_menu()
-	echo("THE ECHO AWAKENS","Move toward the small grazer. Strike, then hold Devour beside its remains.")
+	echo("A WORLD OF POSSIBLE FOOD","Glide over dew and seeds to absorb them. Grow large enough to swallow fungi, creatures, trees, and ruins.")
 	camera_yaw = 0
 	save_game()
 
@@ -184,6 +201,7 @@ func spawn_region(id: int):
 		boss_data.essence_reward = 160
 		boss_data.tint = Color("b17b8d")
 		boss_data.silhouette = "spider"
+		boss_data.body_size = 8.0
 		var boss_node = preload("res://creatures/creature.gd").new()
 		boss_node.game = self
 		boss_node.data = boss_data
@@ -210,12 +228,9 @@ func _process(delta):
 	if "regen" in equipped and in_combat<=0: health=minf(max_health(),health+delta*1.5)
 	var next_region = clampi(int((12-player.position.z)/48),0,4)
 	if next_region != region:
-		var eaten_here = 0
-		for uid in consumed_ids:
-			if int(uid/100)==region: eaten_here+=1
-		if next_region>region and (eaten_here<3 or (next_region==4 and form=="Wisp")):
+		if next_region>region and (growth.size_value()<growth.GATES[next_region] or (next_region==4 and form=="Wisp")):
 			player.position.z = 12-(region+1)*48+0.7
-			if echo_time<2: echo("LIVING MEMBRANE", "The nest rejects an unevolved Core. Evolve at a Memory Pool." if next_region==4 and form=="Wisp" else "Absorb %d more organisms in this region to pass." % (3-eaten_here))
+			if echo_time<2: echo("GROW TO REACH THE NEXT CHAMBER", "The nest rejects an unevolved Core. Evolve at a Memory Pool." if next_region==4 and form=="Wisp" else "Reach %.1f m by absorbing larger food. You are %.1f m." % [growth.GATES[next_region]*1.25,growth.size_value()*1.25])
 			next_region = region
 	if next_region != region:
 		region = next_region
@@ -230,7 +245,7 @@ func _process(delta):
 				c.queue_free()
 		echo(world.NAMES[region], ["A small life. An impossible appetite.","Toxins gather in the still water. Burst across them.","These stones remember their makers.","Hunt what your body needs.","Something below is eating everything."][region])
 	for i in range(5):
-		if player.position.distance_to(world.pools[i])<3:
+		if player.position.distance_to(world.pools[i])<3+growth.display_size*0.5:
 			health = minf(max_health(),health+delta*25)
 			if checkpoint != i or checkpoint_cooldown<=0:
 				checkpoint = i
@@ -307,11 +322,13 @@ func update_camera(delta):
 	# A restrained heading bias avoids disorienting movement-relative feedback.
 	if settings.smart and camera_manual<=0 and player.velocity.length()>0.8:
 		camera_yaw = lerp_angle(camera_yaw,clampf(atan2(-player.facing.x,-player.facing.z),-0.35,0.35),delta*0.35)
-	var target = player.position+Vector3(0,1.3,0)
-	var distance = 15.5 if region==4 else 12.5
+	var target = player.position+Vector3(0,0.9*growth.display_size,0)
+	var distance = 7.5+growth.display_size*4.0+(4 if region==4 else 0)
+	camera.far=190
+	camera.near=maxf(0.05,growth.display_size*0.025)
 	var offset = Vector3(0,sin(camera_pitch)*distance,cos(camera_pitch)*distance).rotated(Vector3.UP,camera_yaw)
 	var desired = target+offset
-	desired.x = clampf(desired.x,-20,20)
+	desired.x = clampf(desired.x,-20-growth.display_size*2,20+growth.display_size*2)
 	var query = PhysicsRayQueryParameters3D.create(target,desired)
 	query.exclude = [player.get_rid()]
 	var collision = get_world_3d().direct_space_state.intersect_ray(query)
@@ -323,14 +340,26 @@ func update_camera(delta):
 
 func attack(secondary: bool):
 	var definition = ability()
+	var colossal=growth.size_value()>=4.7
+	var evolved_attack=growth.size_value()>=1.8
 	var damage = definition.damage*(1.35 if form=="Predator" else 1.0)
-	var reach = definition.reach
+	damage *= sqrt(growth.size_value())
+	var reach = definition.reach+growth.display_size*0.7
 	if has_synergy("heat","electric"): damage*=1.35
 	if secondary:
 		player.secondary_cd = 3.5 if form=="Arcane" else 5
+		growth.suction_time=1.6+(1 if form=="Arcane" else 0)
 		damage *= 1.8*(1.4 if form=="Arcane" else 1.0)
-		reach = 7 if not "electric" in equipped else 12
+		reach = (7 if not "electric" in equipped else 12)+growth.display_size
 	else: player.attack_cd = definition.cooldown*(0.75 if form=="Arcane" else 1.0)
+	if not secondary and definition.id=="slam" and evolved_attack:
+		if colossal:
+			player.velocity.y=4
+			var shock=Art.shape(self,"torus",player.position+Vector3.UP*0.15,Vector3.ONE*reach,Color("d9e8b2"),0.3)
+			shock.scale.y=0.15
+			effects.append({"node":shock,"velocity":Vector3.ZERO,"life":0.3,"kind":"beam"})
+		else:
+			player.dash_time=0.10
 	var facing = player.facing
 	var nearest
 	var best = reach+1
@@ -350,7 +379,7 @@ func attack(secondary: bool):
 		if not is_instance_valid(c) or c.dead: continue
 		var offset = c.position-player.position
 		var allowed = reach+(2 if c.boss else 0)
-		if offset.length()<allowed and (secondary or facing.dot(offset.normalized())>0.15):
+		if offset.length()<allowed and (secondary or (colossal and definition.id in ["slam","flame","venom"]) or facing.dot(offset.normalized())>0.15):
 			c.hit(damage,color)
 			if "venom" in equipped: c.poison = 4
 			if "heat" in equipped: c.burn = 3
@@ -358,7 +387,7 @@ func attack(secondary: bool):
 			if not c.boss: c.position += offset.normalized()*0.3
 			hits += 1
 			in_combat = 4
-			if not secondary and definition.id=="arc": break
+			if not secondary and definition.id=="arc" and hits >= (6 if colossal else (3 if evolved_attack else 1)): break
 	if secondary and has_synergy("echo","electric"):
 		for c in creatures:
 			if is_instance_valid(c) and not c.dead and c.position.distance_to(player.position)<16:
@@ -399,14 +428,14 @@ func respawn():
 			c.health = c.data.max_health
 			c.phase = 1
 			c.position = c.home
-			c.visual.scale = Vector3.ONE*3.3
+			c.visual.scale = Vector3.ONE*8.0
 			c.copied = ""
 	echo("MEMORY RECONSTRUCTED","Your adaptations remain. Try a different body.")
 	save_game()
 
 func update_devour(delta):
 	var candidate
-	var nearest = 3.4
+	var nearest = 2.2+growth.display_size*0.7
 	for c in creatures:
 		if is_instance_valid(c) and c.dead and not c.consumed:
 			var d = c.position.distance_to(player.position)
@@ -422,18 +451,19 @@ func update_devour(delta):
 	if Input.is_action_pressed("devour") or devour_toggle:
 		if devour_progress == 0: sound.play("devour")
 		devour_progress += delta*(1.6 if form=="Predator" else 1.0)
-		candidate.visual.scale.x = maxf(0.1,1-devour_progress*0.5)*(3.3 if candidate.boss else 1)
+		candidate.visual.scale.x = maxf(0.1,1-devour_progress*0.5)*candidate.data.body_size
 		candidate.visual.scale.z = candidate.visual.scale.x
 		if Engine.get_process_frames()%5==0: beam(candidate.position+Vector3.UP,player.position+Vector3.UP,Color("a0ffe2"))
 		if devour_progress>=1.4: consume(candidate)
 	else:
 		devour_progress = maxf(0,devour_progress-delta*2)
-		candidate.visual.scale.x = 3.3 if candidate.boss else 1
+		candidate.visual.scale.x = candidate.data.body_size
 		candidate.visual.scale.z = candidate.visual.scale.x
 
 func consume(c):
 	c.consumed = true
 	stats.devoured += 1
+	growth.add_mass(pow(c.data.body_size,3)*0.8,c.data.display_name,c.data.body_size)
 	essence += c.data.essence_reward
 	health = minf(max_health(),health+14)
 	consumed_ids.append(c.index)
@@ -471,7 +501,7 @@ func equip(id: String) -> bool:
 	save_game()
 	return true
 
-func near_pool() -> bool: return player.position.distance_to(world.pools[checkpoint])<4.5
+func near_pool() -> bool: return player.position.distance_to(world.pools[checkpoint])<4.5+growth.display_size*0.5
 
 func evolve(choice: String) -> bool:
 	if form!="Wisp" or essence<180 or not near_pool(): return false
@@ -518,6 +548,7 @@ func save_game():
 				bindings[action].append(event.physical_keycode)
 	if playing:
 		saved = {"version":1,"settings":settings,"bindings":bindings,"essence":essence,"form":form,"equipped":equipped,"discovered":discovered,"synergies":synergies,"secrets":secrets,"consumed_ids":consumed_ids,"checkpoint":checkpoint,"stats":stats,"completed":completed,"boss_killed":boss_killed}
+		saved["growth"]=growth.snapshot()
 	else:
 		saved["version"] = 1
 		saved["settings"] = settings
@@ -650,5 +681,41 @@ func self_test():
 	await get_tree().create_timer(1.6).timeout
 	Input.action_release("devour")
 	assert(stats.devoured==1)
+	# Growth is volumetric, persisted, and opens a complete food chain.
+	growth.reset()
+	assert(not growth.can_eat(growth.data.tree))
+	assert(growth.can_eat(growth.data.dew))
+	var starting_size=growth.size_value()
+	growth.add_mass(1,"Test meal",1)
+	assert(growth.size_value()>starting_size)
+	var growth_save=growth.snapshot()
+	growth.reset(growth_save)
+	assert(is_equal_approx(growth.mass,growth_save.mass))
+	growth.mass=pow(2.3,3)
+	equipped=[]
+	assert(not growth.can_eat(growth.data.boulder))
+	equipped=["armor"]
+	assert(growth.can_eat(growth.data.boulder))
+	equipped=[]
+	growth.mass=pow(5,3)
+	assert(ability_name()=="Seismic Bellyflop")
+	assert(growth.can_eat(growth.data.tree))
+	# Verify each chamber contains enough accessible food for its next size gate.
+	start_run(false)
+	for chamber in range(5):
+		region=chamber
+		world.stream(chamber)
+		var progressed=true
+		while progressed:
+			progressed=false
+			for item in growth.items.duplicate():
+				if is_instance_valid(item) and not item.absorbing and int((item.uid-10000)/100)==chamber and growth.can_eat(item.data):
+					growth.absorb(item)
+					progressed=true
+		if chamber<4: assert(growth.size_value()>=growth.GATES[chamber+1])
+	assert(growth.size_value()>9)
+	assert(growth.objects_eaten>100)
+	print("GROWTH_TEST_PASS: volume, edible thresholds, appetite mutations, persistence, evolved attacks, all five size gates")
 	print("SELF_TEST_PASS: input, traits, capacity, synergy, evolution, devour, respawn, boss, ending, serialization")
+	await get_tree().create_timer(0.65).timeout
 	get_tree().quit()

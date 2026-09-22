@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "fungus"
+display_name = "Lantern fungus"
+required_size = 1
+biomass = 1.5
+body_size = 0.8
+tint = Color(0.733333333333333,0.627450980392157,0.847058823529412,1)
+family = "plant"

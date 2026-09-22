@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "boulder"
+display_name = "Moss boulder"
+required_size = 2.65
+biomass = 20
+body_size = 1.8
+tint = Color(0.603921568627451,0.631372549019608,0.545098039215686,1)
+family = "mineral"

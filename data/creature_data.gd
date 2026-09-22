@@ -11,4 +11,5 @@ extends Resource
 @export var trait_reward: String
 @export var tint: Color = Color.WHITE
 @export var silhouette: String = "beetle"
+@export var body_size: float = 1.0
 @export var species_tags: PackedStringArray

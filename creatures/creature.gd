@@ -29,8 +29,8 @@ func _ready():
 	health = data.max_health
 	home = position
 	visual = Art.organism(self,data.silhouette,data.tint,boss)
-	if boss: visual.scale = Vector3.ONE*3.3
-	caption = Art.label(self,data.display_name,Vector3(0,3.0 if not boss else 8,0),Color("e9f4db"),25 if not boss else 38)
+	visual.scale = Vector3.ONE*(8.0 if boss else data.body_size)
+	caption = Art.label(self,data.display_name,Vector3(0,2.4*data.body_size if not boss else 18,0),Color("e9f4db"),25 if not boss else 38)
 	ring = Art.shape(self,"torus",Vector3(0,0.08,0),Vector3(1.4,0.13,1.4),Color("ff946d"),0.6)
 	ring.visible = false
 	cooldown = randf_range(1,3)
@@ -40,7 +40,7 @@ func _process(delta):
 	if game == null or not game.playing or game.menu_open: return
 	age += delta
 	if dead:
-		visual.scale.y = lerpf(visual.scale.y,0.2 if not boss else 0.65,delta*7)
+		visual.scale.y = lerpf(visual.scale.y,data.body_size*0.2 if not boss else 1.6,delta*7)
 		caption.text = ("ROOT FRAGMENT" if boss else data.display_name.to_upper()) + "  ·  DEVOUR"
 		caption.modulate = Color("97f8d2")
 		return
@@ -76,7 +76,7 @@ func _process(delta):
 		return
 	var toward = game.player.position-position
 	toward.y = 0
-	var attack_range = (7.0 if boss else (8.0 if data.behavior_type == "ranged" else 2.0))
+	var attack_range = (10.0 if boss else (8.0 if data.behavior_type == "ranged" else data.body_size+game.growth.display_size*0.5))
 	if state == "ATTACK":
 		ring.visible = true
 		var warning = 1.25 if boss else 0.85
@@ -98,7 +98,10 @@ func _process(delta):
 			state_time = 0
 		return
 	var move = Vector3.ZERO
-	if data.behavior_type == "graze":
+	if not boss and game.growth.size_value()>data.body_size*1.6 and distance<14:
+		state="FLEE"
+		move=-toward.normalized()
+	elif data.behavior_type == "graze":
 		state = "FLEE" if health < data.max_health and distance<9 else "GRAZE"
 		move = -toward.normalized() if state == "FLEE" else wander_dir*0.25
 	elif distance < (18 if boss else 12):
@@ -126,7 +129,7 @@ func _process(delta):
 	position.z = clampf(position.z,home.z-16,home.z+16)
 	if move.length()>0.1: visual.rotation.y = lerp_angle(visual.rotation.y,atan2(-move.x,-move.z),delta*7)
 	visual.position.y = absf(sin(age*(7 if data.behavior_type == "leap" else 4)))*(0.65 if data.silhouette == "bat" else 0.10)
-	caption.text = data.display_name + ("  %d" % health if health<data.max_health else "")
+	caption.text = data.display_name + ("  /  SWALLOW WHOLE" if not boss and game.growth.size_value()>=data.body_size*(1.45 if game.form=="Predator" else 1.8) else ("  %d" % health if health<data.max_health else ""))
 
 func hit(amount: float, color: Color, credited: bool = true):
 	if dead: return

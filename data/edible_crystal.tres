@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "crystal"
+display_name = "Echo crystal"
+required_size = 1.65
+biomass = 5
+body_size = 1.2
+tint = Color(0.541176470588235,0.811764705882353,0.83921568627451,1)
+family = "mineral"

@@ -12,3 +12,4 @@ essence_reward = 18
 trait_reward = "heat"
 tint = Color(0.980392156862745,0.580392156862745,0.384313725490196,1)
 silhouette = "beetle"
+body_size = 1.4

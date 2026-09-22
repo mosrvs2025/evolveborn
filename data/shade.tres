@@ -12,3 +12,4 @@ essence_reward = 32
 trait_reward = "shadow"
 tint = Color(0.623529411764706,0.513725490196078,0.796078431372549,1)
 silhouette = "spider"
+body_size = 2.7

@@ -40,7 +40,7 @@ static func shape(parent: Node3D, kind: String, pos: Vector3, size: Vector3, col
 		_:
 			mesh = BoxMesh.new()
 	node.mesh = mesh
-	node.visibility_range_end = 85
+	node.visibility_range_end = 160
 	node.visibility_range_end_margin = 8
 	node.material_override = material(color,glow)
 	node.position = pos

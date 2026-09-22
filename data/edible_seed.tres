@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "seed"
+display_name = "Amber seed"
+required_size = 0.55
+biomass = 0.28
+body_size = 0.5
+tint = Color(0.890196078431372,0.737254901960784,0.470588235294118,1)
+family = "plant"

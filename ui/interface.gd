@@ -9,6 +9,8 @@ var content: VBoxContainer
 var health_bar: ProgressBar
 var essence_bar: ProgressBar
 var health_label: Label
+var size_label: Label
+var size_bar: ProgressBar
 var location_label: Label
 var objective: Label
 var ability_label: Label
@@ -102,6 +104,11 @@ func build_hud():
 	essence_bar.show_percentage = false
 	essence_bar.custom_minimum_size.y = 5
 	stack.add_child(essence_bar)
+	size_label=label(stack,"0.75 m  /  DROPLET",16,Color("e4d49e"))
+	size_bar=ProgressBar.new()
+	size_bar.show_percentage=false
+	size_bar.custom_minimum_size.y=6
+	stack.add_child(size_bar)
 	location_label = label(root,"01  /  AWAKENING CAVERN",16,MINT)
 	objective = label(root,"Become something more.",22)
 	ability_label = label(root,"",17)
@@ -142,7 +149,7 @@ func layout():
 	var landscape = s.y<550
 	root.get_node("Vitals").position = Vector2(18,18)
 	root.get_node("Vitals").size.x = 185 if s.x<500 else (260 if compact else 300)
-	location_label.position = Vector2(24,155) if compact else Vector2(s.x*0.5-200,28)
+	location_label.position = Vector2(24,182) if compact else Vector2(s.x*0.5-200,28)
 	objective.position = location_label.position+Vector2(0,25)
 	objective.add_theme_font_size_override("font_size",17 if compact else 22)
 	root.get_node("PauseButton").position = Vector2(s.x-70,20)
@@ -151,10 +158,10 @@ func layout():
 	root.get_node("BodyButton").size.x = 96
 	ability_label.position = Vector2(20,s.y-68)
 	ability_label.size.x = s.x-40
-	echo_box.position = Vector2(24,s.y-185 if not compact else 210)
+	echo_box.position = Vector2(24,s.y-185 if not compact else 237)
 	echo_box.size = Vector2(minf(490,s.x-48),95)
 	if landscape:
-		root.get_node("Vitals").size = Vector2(215,92)
+		root.get_node("Vitals").size = Vector2(215,145)
 		location_label.position = Vector2(250,23)
 		objective.position = Vector2(250,48)
 		echo_box.position = Vector2(235,95)
@@ -196,12 +203,20 @@ func update_hud():
 	health_bar.value = game.health
 	essence_bar.max_value = 180
 	essence_bar.value = game.essence
+	var size=game.growth.size_value()
+	size_label.text="%.2f m  /  %s" % [size*1.25,game.growth.TITLES[game.growth.stage]]
+	var next_stage=mini(game.growth.stage+1,game.growth.STAGES.size()-1)
+	size_bar.min_value=game.growth.STAGES[game.growth.stage]
+	size_bar.max_value=maxf(size_bar.min_value+0.1,game.growth.STAGES[next_stage])
+	size_bar.value=size
 	location_label.text = "%02d  /  %s" % [game.region+1,game.world.NAMES[game.region]]
-	objective.text = "Find the Root Devourer" if game.form!="Wisp" else ("Evolve at a Memory Pool" if game.essence>=180 else "Gather Essence  ·  %d / 180" % game.essence)
+	objective.text = "Next chamber  /  grow to %.1f m" % (game.growth.GATES[game.region+1]*1.25) if game.region<4 else "Consume the Ancient Nest"
+	if game.region<4 and size>=game.growth.GATES[game.region+1]: objective.text="Chamber open  /  follow the trail"
+	if game.essence>=180 and game.form=="Wisp": objective.text="Evolution ready  /  find a Memory Pool"
 	var primary = InputSetup.prompt("action_primary",game.device)
 	var secondary = InputSetup.prompt("action_secondary",game.device)
 	var mobility = InputSetup.prompt("mobility",game.device)
-	ability_label.text = "[%s] %s    ·    [%s] %s    ·    [%s] Burst %s    ·    [%s] Body" % [primary,game.ability().display_name,secondary,"Special" if game.player.secondary_cd<=0 else "%.1fs" % game.player.secondary_cd,mobility,"" if game.player.mobility_cd<=0 else "%.1fs" % game.player.mobility_cd,InputSetup.prompt("body",game.device)]
+	ability_label.text = "[%s] %s    ·    [%s] %s    ·    [%s] Burst %s    ·    [%s] Body" % [primary,game.ability_name(),secondary,"Inhale + special" if game.player.secondary_cd<=0 else "%.1fs" % game.player.secondary_cd,mobility,"" if game.player.mobility_cd<=0 else "%.1fs" % game.player.mobility_cd,InputSetup.prompt("body",game.device)]
 	echo_box.visible = game.echo_time>0 and not game.menu_open and game.settings.subtitles
 	var can_devour = is_instance_valid(game.devour_target) and not game.menu_open
 	devour_label.visible = can_devour
@@ -276,8 +291,8 @@ func close_menu():
 
 func main_menu():
 	game.playing = false
-	menu("A small life.\nAn impossible appetite.","An original action RPG in the Hollow. Hunt unfamiliar organisms. Devour their traits. Build the creature you become.")
-	label(content,"HUNT   /   DEVOUR   /   ADAPT   /   EVOLVE",16,MINT)
+	menu("The world is food.\nGrow into it.","Begin as a droplet. Absorb seeds, swallow creatures, uproot forests, and devour ancient ruins. Every meal changes your body—and your view of the world.")
+	label(content,"ABSORB   /   GROW   /   MUTATE   /   DEVOUR",16,MINT)
 	if not game.saved.is_empty(): button(content,"Continue your evolution",func(): game.start_run(true))
 	button(content,"Awaken in the Hollow",func():
 		if not game.saved.is_empty(): confirm_new()
@@ -310,6 +325,8 @@ func debug_menu():
 	button(content,"Discover every trait",func(): game.discovered=game.TRAITS.duplicate(); body_menu())
 	button(content,"Grant evolution Essence",func(): game.essence=180; game.player.position=game.world.pools[game.checkpoint]; body_menu())
 	button(content,"Restore vitality",func(): game.health=game.max_health(); close_menu())
+	for size in [0.6,2.0,5.0,9.0]:
+		button(content,"Growth preview  /  %.1f m" % (size*1.25),func(): game.growth.mass=pow(size,3); game.growth.display_size=size; game.growth.stage=game.growth.stage_index(); game.world.stream(game.region); close_menu())
 	button(content,"Test death recovery",func(): game.stats.deaths+=1; game.respawn(); close_menu())
 	for i in range(5):
 		button(content,"Travel to "+game.world.NAMES[i],func(): game.player.position=game.world.pools[i]+Vector3(3,1,0); game.region=i; game.world.stream(i); game.spawn_region(i); close_menu())
@@ -319,6 +336,8 @@ func debug_menu():
 func body_menu():
 	menu("Your body. Your build.","CORE CAPACITY  %d / %d    ·    %d ESSENCE    ·    %s" % [game.used_capacity(),game.capacity(),game.essence,game.form.to_upper()])
 	button(content,"Return to the Hollow",close_menu)
+	label(content,"%.2f m WIDE  /  %s  /  %d OBJECTS ABSORBED" % [game.growth.size_value()*1.25,game.growth.TITLES[game.growth.stage],game.growth.objects_eaten],18,Color("e4d49e"))
+	label(content,"Your appetite grows with your body. Glide over smaller objects to absorb them. Secondary action inhales nearby food. Much smaller creatures can be swallowed whole.",17)
 	if game.in_combat>0: label(content,"Adaptations are locked during combat. Move to safety first.",17,Color("f2bc92"))
 	if game.discovered.is_empty(): label(content,"Defeat a creature, then hold Devour beside its remains.\nThe Echo will analyze a new adaptation.",18)
 	for id in game.TRAITS:
@@ -329,6 +348,7 @@ func body_menu():
 			body_menu())
 		b.disabled = game.in_combat>0 or (not id in game.equipped and game.used_capacity()+adaptation.core_cost>game.capacity())
 		label(content,adaptation.description,16,Color("a7bbb2"))
+		label(content,{"regen":"Appetite: +12% biomass from every meal.","heat":"Appetite: consume plants 20% earlier.","armor":"Appetite: consume minerals 20% earlier.","venom":"Appetite: digest plants 15% earlier.","echo":"Appetite: wider automatic absorption field.","legs":"Mobility: leap over oversized obstacles.","electric":"Appetite: magnetically attract edible minerals.","shadow":"Mobility: slip past threats while foraging."}[id],15,MINT)
 	if game.form=="Wisp":
 		label(content,"EVOLUTION  /  180 ESSENCE",23,MINT)
 		if game.essence>=180 and game.near_pool():
@@ -405,6 +425,7 @@ func controls_menu():
 func end_menu():
 	menu("Beyond the Hollow","END OF VERTICAL SLICE\nThe Primordial Core stirs. This body cannot yet contain what comes next.")
 	label(content,"%02d:%02d  /  %s" % [int(game.stats.time)/60,int(game.stats.time)%60,game.form.to_upper()],30,MINT)
+	label(content,"FINAL SIZE  %.1f m  /  %d SCENERY OBJECTS\nBIGGEST MEAL  %s" % [game.growth.size_value()*1.25,game.growth.objects_eaten,game.growth.biggest],21,Color("e4d49e"))
 	label(content,"%d defeated   ·   %d Devoured   ·   %d / 8 species\n%d traits   ·   %d / 5 synergies   ·   %d deaths\n%d / 5 hidden memories discovered" % [game.stats.kills,game.stats.devoured,game.discovered.size(),game.discovered.size(),game.synergies.size(),game.stats.deaths,game.secrets.size()],20)
 	button(content,"Continue exploring",func(): game.player.position=game.world.pools[3]+Vector3(3,1,0); close_menu())
 	button(content,"Play again",confirm_new)

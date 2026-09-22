@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EdibleData" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/edible_data.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "dew"
+display_name = "Dew bead"
+required_size = 0.35
+biomass = 0.06
+body_size = 0.25
+tint = Color(0.615686274509804,0.92156862745098,0.886274509803922,1)
+family = "plant"
