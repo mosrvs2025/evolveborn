@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "moss_grazer"
+display_name = "Moss Grazer"
+max_health = 30
+damage = 5
+move_speed = 2.2
+behavior = "grazer"
+aggro_range = 8.0
+attack_range = 1.8
+attack_cooldown = 2.2
+attack_windup = 0.5
+essence_reward = 8
+trait_reward = "regenerative_tissue"
+body_plan = "grazer_quad"
+body_scale = 1.0
+color_primary = Color(0.42, 0.55, 0.36, 1.0)
+color_secondary = Color(0.72, 0.85, 0.55, 1.0)
+glow = Color(0.35, 0.9, 0.5, 0.35)
+species_tags = PackedStringArray("prey", "grazer", "organic")
+fears = PackedStringArray("predator")
+voice = "grazer"
+description = "Wide, patient, and entirely uninterested in you until you touch it."

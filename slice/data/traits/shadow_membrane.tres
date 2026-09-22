@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "shadow_membrane"
+display_name = "Shadow Membrane"
+core_cost = 2
+trait_type = "hybrid"
+description = "You stop being entirely present. Burst becomes Phase Slip, longer invulnerability, and creatures notice you later."
+stat_modifiers = {
+"dodge_iframes": 0.12
+}
+active_ability = "phase_slip"
+ability_slot = "mobility"
+visual_mutation = "smoke"
+synergy_tags = PackedStringArray("shadow", "sense")
+color = Color(0.55, 0.42, 0.78, 1.0)
+flags = {
+"aggro_reduce": 0.35
+}
+echo_note = "Partial phase displacement. I cannot tell where the rest of you goes."

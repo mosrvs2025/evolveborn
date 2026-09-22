@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "shell_bash"
+display_name = "Shell Bash"
+description = "Hardened plates turn the slam into a battering ram."
+shape = "melee_arc"
+damage = 17
+cooldown = 0.62
+range = 2.9
+angle_deg = 115
+lunge = 2.8
+knockback = 11.0
+windup = 0.11
+recovery = 0.26
+color = Color(0.85, 0.72, 0.42, 1.0)
+sfx = "bash"
+vfx = "impact"
+flags = {
+"armor_pierce": 2.0
+}

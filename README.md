@@ -63,3 +63,19 @@ No external art, audio, font, API, account or gameplay service is required. Geom
 Automated checks cover real movement/attack/held-Devour input, trait capacity, synergy, evolution, death recovery, boss victory, ending state, and disk save/load. Desktop and emulated mobile browsers are visually checked for launch, layout, menus, and console errors.
 
 This is the first playable implementation of the brief. The 20–40 minute first-play target and subjective balance need human playtesting; they are not validated timing guarantees. Real iOS/Android hardware and physical gamepads have not been tested. Art and music are procedural and modest in scope. Quick-swap loadout slots are not included. The five chambers follow a linear main route with optional relic alcoves; they are not a large open world.
+
+## Two builds
+
+There are two EVOLVEBORN projects in this repository, both published from the
+one GitHub Pages site, and neither replaces the other:
+
+| | Where it lives | Plays at |
+|---|---|---|
+| Original (Godot 4.7.1) | repository root | https://mosrvs2025.github.io/evolveborn/ |
+| Vertical slice (Godot 4.3) | `slice/` | https://mosrvs2025.github.io/evolveborn/slice/ |
+
+The slice is a separate, larger implementation of the same design: five
+regions, ten adaptations, six synergies, three evolutions, the Root Devourer
+and an ending, with all art and audio generated at build time. See
+`slice/README.md` for it and `slice/README-DEPLOY.md` for how the two are kept
+apart. Its full history is on the `vertical-slice` branch.

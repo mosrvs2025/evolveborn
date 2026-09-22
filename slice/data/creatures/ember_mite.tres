@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "ember_mite"
+display_name = "Ember Mite"
+max_health = 22
+damage = 7
+move_speed = 4.6
+behavior = "aggressor"
+aggro_range = 13.0
+attack_range = 2.0
+attack_cooldown = 1.5
+attack_windup = 0.35
+ranged_ability = "mite_charge"
+essence_reward = 10
+trait_reward = "heat_gland"
+body_plan = "mite"
+body_scale = 0.8
+color_primary = Color(0.35, 0.16, 0.12, 1.0)
+color_secondary = Color(1.0, 0.5, 0.2, 1.0)
+glow = Color(1.0, 0.45, 0.15, 0.9)
+species_tags = PackedStringArray("predator", "insect", "heat")
+diet = PackedStringArray("prey")
+voice = "mite"
+description = "It runs hot enough that the ground remembers where it stood."

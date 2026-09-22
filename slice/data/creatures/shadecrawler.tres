@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "shadecrawler"
+display_name = "Shadecrawler"
+max_health = 50
+damage = 14
+move_speed = 4.2
+behavior = "ambusher"
+aggro_range = 16.0
+attack_range = 2.3
+attack_cooldown = 2.2
+attack_windup = 0.32
+essence_reward = 19
+trait_reward = "shadow_membrane"
+body_plan = "crawler"
+body_scale = 1.1
+color_primary = Color(0.14, 0.12, 0.2, 1.0)
+color_secondary = Color(0.5, 0.35, 0.7, 1.0)
+glow = Color(0.5, 0.3, 0.8, 0.5)
+species_tags = PackedStringArray("predator", "shadow")
+diet = PackedStringArray("prey", "insect", "flyer")
+voice = "crawler"
+description = "You will find it by being wrong about where it was."

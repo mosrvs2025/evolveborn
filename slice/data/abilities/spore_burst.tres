@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "spore_burst"
+display_name = "Spore Burst"
+shape = "aoe"
+damage = 8
+cooldown = 3.5
+radius = 4.0
+status = "poison"
+status_power = 3.0
+status_time = 4.0
+windup = 0.55
+color = Color(0.6, 0.9, 0.45, 1.0)
+sfx = "spore"
+vfx = "spore"

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "electrical_organ"
+display_name = "Electrical Organ"
+core_cost = 3
+trait_type = "active"
+description = "Stacked cells hold a charge. Grants Arc Bolt, which jumps between bodies."
+stat_modifiers = {
+"ability_power": 0.05
+}
+active_ability = "arc_bolt"
+ability_slot = "secondary"
+visual_mutation = "arcs"
+synergy_tags = PackedStringArray("shock", "energy")
+color = Color(0.65, 0.9, 1.0, 1.0)
+echo_note = "Potential difference, biologically maintained. Do not hold it too long."

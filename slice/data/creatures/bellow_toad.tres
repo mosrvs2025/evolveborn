@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "bellow_toad"
+display_name = "Bellow Toad"
+max_health = 58
+damage = 10
+move_speed = 2.4
+behavior = "ranged"
+aggro_range = 15.0
+attack_range = 12.0
+attack_cooldown = 3.0
+attack_windup = 0.6
+ranged_ability = "toad_spit"
+essence_reward = 17
+trait_reward = "pressurized_sac"
+body_plan = "toad"
+body_scale = 1.2
+color_primary = Color(0.3, 0.4, 0.3, 1.0)
+color_secondary = Color(0.8, 0.9, 0.55, 1.0)
+glow = Color(0.6, 0.95, 0.5, 0.3)
+species_tags = PackedStringArray("prey", "amphibian")
+fears = PackedStringArray("predator")
+voice = "toad"
+description = "It inflates before it spits. That is the whole tell, and it is enough."

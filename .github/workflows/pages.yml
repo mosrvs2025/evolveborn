@@ -34,6 +34,14 @@ jobs:
           mkdir -p build/web
           godot --headless --export-release Web
           touch build/web/.nojekyll
+      - name: Publish the vertical slice alongside it
+        run: |
+          # slice/ is a second, self-contained Godot project on a different
+          # engine version, so it ships pre-exported rather than being built
+          # here. It lands at /slice/ and leaves the root site untouched.
+          test -f slice/docs/index.html
+          mkdir -p build/web/slice
+          cp -R slice/docs/. build/web/slice/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build/web

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "heat_gland"
+display_name = "Heat Gland"
+core_cost = 3
+trait_type = "active"
+description = "An internal furnace. Grants Flame Burst on the secondary action."
+stat_modifiers = {
+"ability_power": 0.08
+}
+active_ability = "flame_burst"
+ability_slot = "secondary"
+visual_mutation = "heat_core"
+synergy_tags = PackedStringArray("heat", "energy")
+color = Color(1.0, 0.55, 0.2, 1.0)
+echo_note = "Exothermic organ. Contained, for now."

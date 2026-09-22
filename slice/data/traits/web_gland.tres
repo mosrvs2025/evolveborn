@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "web_gland"
+display_name = "Web Gland"
+core_cost = 3
+trait_type = "active"
+description = "Spinnerets. Grants Web Shot, which holds whatever it lands on in place."
+stat_modifiers = {}
+active_ability = "web_shot"
+ability_slot = "secondary"
+visual_mutation = "spinnerets"
+synergy_tags = PackedStringArray("silk", "shock")
+color = Color(0.92, 0.95, 0.88, 1.0)
+echo_note = "Tensile protein. Conductive, incidentally."
