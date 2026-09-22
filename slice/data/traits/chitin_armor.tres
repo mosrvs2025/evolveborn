@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "chitin_armor"
+display_name = "Chitin Armor"
+core_cost = 3
+trait_type = "hybrid"
+description = "Interlocking plates grow over the membrane. Physical damage reduced 30%. Slightly slower."
+stat_modifiers = {
+"phys_resist": 0.3,
+"move_speed": -0.06,
+"knockback_resist": 0.5,
+"max_health": 0.1
+}
+active_ability = "shell_bash"
+ability_slot = "primary"
+visual_mutation = "plates"
+synergy_tags = PackedStringArray("armor", "physical")
+color = Color(0.85, 0.7, 0.4, 1.0)
+echo_note = "Structural lattice. It will cost you speed and give it back as time."

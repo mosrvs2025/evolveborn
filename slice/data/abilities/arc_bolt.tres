@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "arc_bolt"
+display_name = "Arc Bolt"
+description = "A charge that prefers the shortest path between bodies."
+shape = "projectile"
+damage = 14
+cooldown = 1.5
+range = 22.0
+speed = 26.0
+radius = 0.5
+status = "shock"
+status_power = 3.0
+status_time = 2.0
+windup = 0.14
+color = Color(0.6, 0.85, 1.0, 1.0)
+sfx = "arc"
+vfx = "spark"
+flags = {
+"chain": 2.0,
+"chain_range": 7.0
+}

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "seed_volley"
+display_name = "Seed Volley"
+shape = "projectile"
+damage = 12
+cooldown = 4.0
+range = 30.0
+speed = 16.0
+radius = 0.7
+windup = 0.7
+color = Color(0.8, 0.75, 0.4, 1.0)
+sfx = "spit"
+vfx = "goo"
+flags = {
+"volley": 5.0,
+"spread": 26.0
+}

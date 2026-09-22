@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "flame_burst"
+display_name = "Flame Burst"
+description = "Vent the gland. Short range, immediate consequences."
+shape = "cone"
+damage = 15
+cooldown = 2.2
+range = 6.0
+angle_deg = 55
+duration = 0.35
+status = "burn"
+status_power = 5.0
+status_time = 3.0
+knockback = 3.0
+windup = 0.18
+color = Color(1.0, 0.55, 0.2, 1.0)
+sfx = "flame"
+vfx = "flame"

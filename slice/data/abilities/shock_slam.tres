@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "shock_slam"
+display_name = "Concussive Slam"
+description = "A pressurised sac vents on impact and the air does the rest."
+shape = "melee_arc"
+damage = 13
+cooldown = 0.55
+range = 2.7
+angle_deg = 140
+lunge = 2.2
+knockback = 14.0
+windup = 0.08
+recovery = 0.24
+radius = 4.2
+color = Color(0.7, 0.95, 0.95, 1.0)
+sfx = "burst"
+vfx = "shockwave"
+flags = {
+"shockwave": 1.0
+}

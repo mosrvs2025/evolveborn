@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "flame_breath"
+display_name = "Flame Breath"
+description = "Pressure behind heat. It keeps going as long as you do."
+shape = "cone"
+damage = 11
+cooldown = 4.0
+range = 11.0
+angle_deg = 40
+duration = 1.9
+status = "burn"
+status_power = 7.0
+status_time = 4.0
+knockback = 2.0
+windup = 0.22
+color = Color(1.0, 0.45, 0.12, 1.0)
+sfx = "flame_long"
+vfx = "flame"
+flags = {
+"sustained": 1.0,
+"tick": 0.18
+}

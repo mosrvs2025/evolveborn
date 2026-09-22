@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "echo_sense"
+display_name = "Echo Sense"
+core_cost = 2
+trait_type = "passive"
+description = "Sensory antennae. Creatures are outlined through terrain, strikes track better, and Devour yields more."
+stat_modifiers = {
+"detect_range": 0.6,
+"essence_mult": 0.2,
+"assist": 0.35
+}
+visual_mutation = "antennae"
+synergy_tags = PackedStringArray("sense", "psychic")
+color = Color(0.6, 0.85, 1.0, 1.0)
+flags = {
+"reveal": 1.0
+}
+echo_note = "You are hearing shapes. I can work with that."

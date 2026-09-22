@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "phase_slip"
+display_name = "Phase Slip"
+description = "Briefly stop being solid enough to hit."
+shape = "dash"
+damage = 0
+cooldown = 1.0
+speed = 24.0
+duration = 0.24
+iframes = 0.42
+color = Color(0.55, 0.4, 0.75, 1.0)
+sfx = "phase"
+vfx = "smoke"
+flags = {
+"phase": 1.0,
+"mark": 1.0
+}

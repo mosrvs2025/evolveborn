@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "eel_arc"
+display_name = "Static Discharge"
+shape = "projectile"
+damage = 9
+cooldown = 2.6
+range = 18.0
+speed = 17.0
+radius = 0.45
+status = "shock"
+status_power = 2.0
+status_time = 1.5
+windup = 0.5
+color = Color(0.6, 0.85, 1.0, 1.0)
+sfx = "arc"
+vfx = "spark"

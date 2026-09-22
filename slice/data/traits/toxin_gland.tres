@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TraitData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/trait_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "toxin_gland"
+display_name = "Toxin Gland"
+core_cost = 3
+trait_type = "hybrid"
+description = "Toxic sacs. The primary strike becomes Venom Strike and everything you hit keeps taking damage."
+stat_modifiers = {}
+active_ability = "venom_strike"
+ability_slot = "primary"
+visual_mutation = "sacs"
+synergy_tags = PackedStringArray("toxin", "organic")
+color = Color(0.6, 0.95, 0.4, 1.0)
+flags = {
+"on_hit_status": "poison",
+"on_hit_power": 3.0,
+"on_hit_time": 4.0
+}
+echo_note = "A delivery system looking for something to deliver."

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="CreatureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/creature_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "sporeling"
+display_name = "Sporeling"
+max_health = 36
+damage = 8
+move_speed = 1.6
+behavior = "territorial"
+aggro_range = 7.5
+attack_range = 3.6
+attack_cooldown = 3.2
+attack_windup = 0.55
+ranged_ability = "spore_burst"
+essence_reward = 11
+trait_reward = "toxin_gland"
+body_plan = "fungal"
+body_scale = 1.05
+color_primary = Color(0.36, 0.3, 0.42, 1.0)
+color_secondary = Color(0.72, 0.95, 0.5, 1.0)
+glow = Color(0.5, 1.0, 0.45, 0.7)
+species_tags = PackedStringArray("fungal", "toxic")
+voice = "spore"
+description = "It does not hunt. It waits, and then the air is the problem."

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "toad_spit"
+display_name = "Pressure Spit"
+shape = "projectile"
+damage = 11
+cooldown = 3.0
+range = 20.0
+speed = 15.0
+radius = 0.6
+knockback = 7.0
+windup = 0.6
+color = Color(0.75, 0.9, 0.5, 1.0)
+sfx = "spit"
+vfx = "goo"

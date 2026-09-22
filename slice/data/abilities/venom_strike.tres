@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = "venom_strike"
+display_name = "Venom Strike"
+description = "The strike opens the skin so the toxin has somewhere to go."
+shape = "melee_arc"
+damage = 9
+cooldown = 0.42
+range = 2.7
+angle_deg = 125
+lunge = 2.4
+knockback = 4.0
+windup = 0.06
+recovery = 0.18
+status = "poison"
+status_power = 4.0
+status_time = 5.0
+color = Color(0.58, 0.95, 0.42, 1.0)
+sfx = "slash"
+vfx = "venom"
